@@ -27,11 +27,11 @@ namespace ecpp {
             constexpr Range(T from, T to) : _from(from), _to(to) {
             }
 
-            constexpr T from() const {
+            constexpr T getFrom() const {
                 return _from;
             }
 
-            constexpr T to() const {
+            constexpr T getTo() const {
                 return _to;
             }
 

@@ -32,11 +32,11 @@ namespace ecpp {
             constexpr Fraction(Tnum num, Tden den) : _num(num), _den(den) {
             }
 
-            constexpr Tnum num() {
+            constexpr Tnum getNum() {
                 return _num;
             }
 
-            constexpr Tden den() {
+            constexpr Tden getDen() {
                 return _den;
             }
 
@@ -48,19 +48,19 @@ namespace ecpp {
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator *(const T &a, const Fraction<Tnum, Tden> &b) {
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-            return (a * static_cast<T> (b.num())) / static_cast<T> (b.den());
+            return (a * static_cast<T> (b.getNum())) / static_cast<T> (b.getDen());
         }
 
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator *(const Fraction<Tnum, Tden> &a, const T &b) {
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-            return (b * static_cast<T> (a.num())) / static_cast<T> (a.den());
+            return (b * static_cast<T> (a.getNum())) / static_cast<T> (a.getDen());
         }
 
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator /(const T &a, const Fraction<Tnum, Tden> &b) {
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-            return (a * static_cast<T> (b.den())) / static_cast<T> (b.num());
+            return (a * static_cast<T> (b.getDen())) / static_cast<T> (b.getNum());
         }
 
         template <typename T>
