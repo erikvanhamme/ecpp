@@ -72,54 +72,67 @@ namespace std {
     }
 
     void __throw_domain_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_future_error(int i) {
+        (void) i;
         abort();
     }
 
     void __throw_invalid_argument(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_ios_failure(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_length_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_logic_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_out_of_range(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_overflow_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_range_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_regex_error(regex_constants::error_type t) {
+        (void) t;
         abort();
     }
 
     void __throw_runtime_error(char const *s) {
+        (void) s;
         abort();
     }
 
     void __throw_system_error(int i) {
+        (void) i;
         abort();
     }
 
     void __throw_underflow_error(char const *s) {
+        (void) s;
         abort();
     }
 }
