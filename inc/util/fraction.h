@@ -26,6 +26,9 @@ namespace ecpp {
         class Fraction {
         public:
 
+            static_assert(std::is_integral<Tnum>::value, "Tnum should be integral type.");
+            static_assert(std::is_integral<Tden>::value, "Tden should be integral type.");
+
             Fraction() : _num(0), _den(0) {
             }
 
@@ -40,6 +43,8 @@ namespace ecpp {
                 return _den;
             }
 
+            // TODO: Implement math operators for Fraction / Fraction operations.
+
         private:
             Tnum _num;
             Tden _den;
@@ -47,21 +52,32 @@ namespace ecpp {
 
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator *(const T &a, const Fraction<Tnum, Tden> &b) {
+
+            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
             return (a * static_cast<T> (b.getNum())) / static_cast<T> (b.getDen());
         }
 
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator *(const Fraction<Tnum, Tden> &a, const T &b) {
+
+            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
             return (b * static_cast<T> (a.getNum())) / static_cast<T> (a.getDen());
         }
 
         template <typename T, typename Tnum, typename Tden>
         constexpr T operator /(const T &a, const Fraction<Tnum, Tden> &b) {
+
+            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
             static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
             return (a * static_cast<T> (b.getDen())) / static_cast<T> (b.getNum());
         }
+
+        // TODO: Implement other basic math operators, (Addition, Subtraction) return type will be Fraction<Tnum, Tden>.
 
         template <typename T>
         struct is_fraction {

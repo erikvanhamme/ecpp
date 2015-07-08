@@ -19,21 +19,26 @@
 
 #include <cstdint>
 
-struct Endian {
-private:
-    static constexpr uint32_t WORD = 0x01020304;
-    static constexpr uint8_t BYTE = static_cast<const uint8_t &> (WORD);
+namespace ecpp {
+    namespace util {
 
-    static_assert(BYTE != 0x02, "Middle endianness is not supported.");
-    static_assert(BYTE != 0x03, "Middle endianness is not supported.");
+        struct Endian {
+        private:
+            static constexpr std::uint32_t WORD = 0x01020304;
+            static constexpr std::uint8_t BYTE = static_cast<const std::uint8_t &> (WORD);
 
-    Endian() = delete;
+            static_assert(BYTE != 0x02, "Middle endianness is not supported.");
+            static_assert(BYTE != 0x03, "Middle endianness is not supported.");
 
-public:
-    static constexpr bool LITTLE = (BYTE == 0x04);
-    static constexpr bool BIG = (BYTE == 0x01);
+            Endian() = delete;
 
-    static_assert(LITTLE || BIG, "Unknown endianness.");
-};
+        public:
+            static constexpr bool LITTLE = (BYTE == 0x04);
+            static constexpr bool BIG = (BYTE == 0x01);
+
+            static_assert(LITTLE || BIG, "Unknown endianness.");
+        };
+    }
+}
 
 #endif // ENDIANNESS_H

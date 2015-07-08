@@ -17,12 +17,16 @@
 #ifndef RANGE
 #define RANGE
 
+#include <type_traits>
+
 namespace ecpp {
     namespace util {
 
         template <typename T>
         class Range {
         public:
+
+            static_assert(std::is_arithmetic<T>::value, "Range class requires arithmetic type.");
 
             constexpr Range(T from, T to) : _from(from), _to(to) {
             }
@@ -35,12 +39,8 @@ namespace ecpp {
                 return _to;
             }
 
-            bool contains(const T &value) const {
-                if ((_from == 0) && (_to == 0)) {
-                    return true;
-                }
-
-                return (_from <= value) && (value <= _to);
+            constexpr bool contains(const T &value) const {
+                return (((_from == 0) && (_to == 0)) || ((_from <= value) && (value <= _to)));
             }
 
             T apply(const T &value) const {

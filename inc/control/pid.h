@@ -19,7 +19,6 @@
 
 #include "range.h"
 
-#include <algorithm>
 #include <type_traits>
 
 namespace ecpp {
@@ -29,7 +28,11 @@ namespace ecpp {
         class Pid {
         public:
 
-            static_assert(std::is_signed<Tsignal>::value, "Signal type should be signed.");
+            static_assert(std::is_arithmetic<Tsignal>::value, "Signal type should be arithmetic type.");
+            static_assert(std::is_arithmetic<Tout>::value, "Output type should be arithmetic type.");
+            // TODO: Enable when fraction is arithmetic type.
+            //static_assert(std::is_arithmetic<Tcfg>::value, "Config type should be arithmetic type.");
+            static_assert(std::is_signed<Tsignal>::value, "Signal type should be signed type.");
 
             struct Config {
                 Tsignal setPoint;
