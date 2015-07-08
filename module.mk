@@ -14,6 +14,8 @@
 
 sources += \
 	ecpp/src/mem/allocator.cpp \
+	ecpp/src/misc/assertsafe.cpp \
+        ecpp/src/misc/throwsafe.cpp \
 	ecpp/src/util/byteutils.cpp \
 
 headers += \
