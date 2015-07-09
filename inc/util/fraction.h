@@ -20,75 +20,73 @@
 #include <type_traits>
 
 namespace ecpp {
-    namespace util {
 
-        template <typename Tnum = int, typename Tden = int>
-        class Fraction {
-        public:
+    template <typename Tnum = int, typename Tden = int>
+    class Fraction {
+    public:
 
-            static_assert(std::is_integral<Tnum>::value, "Tnum should be integral type.");
-            static_assert(std::is_integral<Tden>::value, "Tden should be integral type.");
+        static_assert(std::is_integral<Tnum>::value, "Tnum should be integral type.");
+        static_assert(std::is_integral<Tden>::value, "Tden should be integral type.");
 
-            Fraction() : _num(0), _den(0) {
-            }
-
-            constexpr Fraction(Tnum num, Tden den) : _num(num), _den(den) {
-            }
-
-            constexpr Tnum getNum() {
-                return _num;
-            }
-
-            constexpr Tden getDen() {
-                return _den;
-            }
-
-            // TODO: Implement math operators for Fraction / Fraction operations.
-
-        private:
-            Tnum _num;
-            Tden _den;
-        };
-
-        template <typename T, typename Tnum, typename Tden>
-        constexpr T operator *(const T &a, const Fraction<Tnum, Tden> &b) {
-
-            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
-            static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-
-            return (a * static_cast<T> (b.getNum())) / static_cast<T> (b.getDen());
+        Fraction() : _num(0), _den(0) {
         }
 
-        template <typename T, typename Tnum, typename Tden>
-        constexpr T operator *(const Fraction<Tnum, Tden> &a, const T &b) {
-
-            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
-            static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-
-            return (b * static_cast<T> (a.getNum())) / static_cast<T> (a.getDen());
+        constexpr Fraction(Tnum num, Tden den) : _num(num), _den(den) {
         }
 
-        template <typename T, typename Tnum, typename Tden>
-        constexpr T operator /(const T &a, const Fraction<Tnum, Tden> &b) {
-
-            static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
-            static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
-
-            return (a * static_cast<T> (b.getDen())) / static_cast<T> (b.getNum());
+        constexpr Tnum getNum() {
+            return _num;
         }
 
-        // TODO: Implement other basic math operators, (Addition, Subtraction) return type will be Fraction<Tnum, Tden>.
+        constexpr Tden getDen() {
+            return _den;
+        }
 
-        template <typename T>
-        struct is_fraction {
-            static constexpr bool value = false;
-        };
+        // TODO: Implement math operators for Fraction / Fraction operations.
 
-        template <typename Tnum, typename Tden>
-        struct is_fraction<Fraction<Tnum, Tden>> {
-            static constexpr bool value = true;
-        };
+    private:
+        Tnum _num;
+        Tden _den;
+    };
+
+    template <typename T, typename Tnum, typename Tden>
+    constexpr T operator *(const T &a, const Fraction<Tnum, Tden> &b) {
+
+        static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
+        static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
+        return (a * static_cast<T> (b.getNum())) / static_cast<T> (b.getDen());
     }
+
+    template <typename T, typename Tnum, typename Tden>
+    constexpr T operator *(const Fraction<Tnum, Tden> &a, const T &b) {
+
+        static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
+        static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
+        return (b * static_cast<T> (a.getNum())) / static_cast<T> (a.getDen());
+    }
+
+    template <typename T, typename Tnum, typename Tden>
+    constexpr T operator /(const T &a, const Fraction<Tnum, Tden> &b) {
+
+        static_assert(std::is_arithmetic<T>::value, "Arithmetic type needed.");
+        static_assert(std::is_signed<T>::value == std::is_signed<Fraction<Tnum, Tden>>::value, "Signed mixed with unsigned.");
+
+        return (a * static_cast<T> (b.getDen())) / static_cast<T> (b.getNum());
+    }
+
+    // TODO: Implement other basic math operators, (Addition, Subtraction) return type will be Fraction<Tnum, Tden>.
+
+    template <typename T>
+    struct is_fraction {
+        static constexpr bool value = false;
+    };
+
+    template <typename Tnum, typename Tden>
+    struct is_fraction<Fraction<Tnum, Tden>> {
+        static constexpr bool value = true;
+    };
 }
 
 namespace std {

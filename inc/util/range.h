@@ -20,50 +20,48 @@
 #include <type_traits>
 
 namespace ecpp {
-    namespace util {
 
-        template <typename T>
-        class Range {
-        public:
+    template <typename T>
+    class Range {
+    public:
 
-            static_assert(std::is_arithmetic<T>::value, "Range class requires arithmetic type.");
+        static_assert(std::is_arithmetic<T>::value, "Range class requires arithmetic type.");
 
-            constexpr Range(T from, T to) : _from(from), _to(to) {
-            }
+        constexpr Range(T from, T to) : _from(from), _to(to) {
+        }
 
-            constexpr T getFrom() const {
-                return _from;
-            }
+        constexpr T getFrom() const {
+            return _from;
+        }
 
-            constexpr T getTo() const {
-                return _to;
-            }
+        constexpr T getTo() const {
+            return _to;
+        }
 
-            constexpr bool contains(const T &value) const {
-                return (((_from == 0) && (_to == 0)) || ((_from <= value) && (value <= _to)));
-            }
+        constexpr bool contains(const T &value) const {
+            return (((_from == 0) && (_to == 0)) || ((_from <= value) && (value <= _to)));
+        }
 
-            T apply(const T &value) const {
-                if ((_from == 0) && (_to == 0)) {
-                    return value;
-                }
-
-                if (value < _from) {
-                    return _from;
-                }
-
-                if (_to < value) {
-                    return _to;
-                }
-
+        T apply(const T &value) const {
+            if ((_from == 0) && (_to == 0)) {
                 return value;
             }
 
-        private:
-            T _from;
-            T _to;
-        };
-    }
+            if (value < _from) {
+                return _from;
+            }
+
+            if (_to < value) {
+                return _to;
+            }
+
+            return value;
+        }
+
+    private:
+        T _from;
+        T _to;
+    };
 }
 
 #endif // RANGE

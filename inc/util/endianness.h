@@ -20,25 +20,23 @@
 #include <cstdint>
 
 namespace ecpp {
-    namespace util {
 
-        struct Endian {
-        private:
-            static constexpr std::uint32_t WORD = 0x01020304;
-            static constexpr std::uint8_t BYTE = static_cast<const std::uint8_t &> (WORD);
+    struct Endian {
+    private:
+        static constexpr std::uint32_t WORD = 0x01020304;
+        static constexpr std::uint8_t BYTE = static_cast<const std::uint8_t &> (WORD);
 
-            static_assert(BYTE != 0x02, "Middle endianness is not supported.");
-            static_assert(BYTE != 0x03, "Middle endianness is not supported.");
+        static_assert(BYTE != 0x02, "Middle endianness is not supported.");
+        static_assert(BYTE != 0x03, "Middle endianness is not supported.");
 
-            Endian() = delete;
+        Endian() = delete;
 
-        public:
-            static constexpr bool LITTLE = (BYTE == 0x04);
-            static constexpr bool BIG = (BYTE == 0x01);
+    public:
+        static constexpr bool LITTLE = (BYTE == 0x04);
+        static constexpr bool BIG = (BYTE == 0x01);
 
-            static_assert(LITTLE || BIG, "Unknown endianness.");
-        };
-    }
+        static_assert(LITTLE || BIG, "Unknown endianness.");
+    };
 }
 
 #endif // ENDIANNESS_H
