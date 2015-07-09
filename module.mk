@@ -15,13 +15,15 @@
 sources += \
 	ecpp/src/allocator.cpp \
 	ecpp/src/assertsafe.cpp \
-	ecpp/src/byteutils.cpp \
 	ecpp/src/throwsafe.cpp \
+	ecpp/src/utils.cpp \
 
 headers += \
 	ecpp/inc/allocator.h \
+	ecpp/inc/endianness.h \
 	ecpp/inc/factory.h \
 	ecpp/inc/fraction.h \
 	ecpp/inc/pid.h \
 	ecpp/inc/range.h \
+	ecpp/inc/utils.h \
 
