@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef BYTEUTILS_H
-#define BYTEUTILS_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <cstddef>
 #include <cstdint>
 
 namespace ecpp {
-    namespace util {
+    namespace utils {
 
         template<typename T>
-        void byteSwap(T &subject) {
+        static void byteSwap(T &subject) {
             constexpr std::size_t subjectSize = sizeof(T);
             std::uint8_t *data = reinterpret_cast<std::uint8_t *>(&subject);
             for (std::uint8_t *p = data, *end = (data + subjectSize - 1); p < end; ++p, --end) {
@@ -57,7 +57,15 @@ namespace ecpp {
 
         template <>
         void byteSwap<std::int64_t>(std::int64_t &subject);
+
+        // Using de Bruijn Sequences to Index a 1 in a Computer Word:
+        // http://supertech.csail.mit.edu/papers/debruijn.pdf
+        static constexpr unsigned int deBruijn[] = {0u, 1u, 28u, 2u, 29u, 14u, 24u, 3u, 30u, 22u, 20u, 15u, 25u, 17u, 4u, 8u,
+                                                    31u, 27u, 13u, 23u, 21u, 19u, 16u, 7u, 26u, 12u, 18u, 6u, 11u, 5u, 10u, 9u};
+        constexpr inline int bitPosition(std::uint32_t v) {
+            return deBruijn[(static_cast<std::uint32_t>((v & -v) * 0x077CB531u)) >> 27];
+        }
     }
 }
 
-#endif // BYTEUTILS_H
+#endif // UTILS_H
