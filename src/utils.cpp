@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "byteutils.h"
+#include "utils.h"
 
 #include <cstdint>
 
