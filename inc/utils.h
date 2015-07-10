@@ -19,6 +19,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <type_traits>
 
 namespace ecpp {
     namespace utils {
@@ -66,6 +67,15 @@ namespace ecpp {
             return deBruijn[(static_cast<std::uint32_t>((v & -v) * 0x077CB531u)) >> 27];
         }
     }
+
+    template<typename>
+    struct is_bitmask : std::false_type {};
 }
+
+template<typename T>
+constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, T>::type operator | (const T left, const T right) {
+    return T(typename std::underlying_type<T>::type(left) | typename std::underlying_type<T>::type(right));
+}
+
 
 #endif // UTILS_H
