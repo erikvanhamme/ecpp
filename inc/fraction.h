@@ -92,7 +92,7 @@ namespace ecpp {
 namespace std {
 
     template <typename Tnum, typename Tden>
-    struct is_signed<ecpp::util::Fraction<Tnum, Tden>> {
+    struct is_signed<ecpp::Fraction<Tnum, Tden>> {
         static constexpr bool value = std::is_signed<Tnum>::value || std::is_signed<Tden>::value;
     };
 }
