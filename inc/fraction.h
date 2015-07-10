@@ -78,15 +78,11 @@ namespace ecpp {
 
     // TODO: Implement other basic math operators, (Addition, Subtraction) return type will be Fraction<Tnum, Tden>.
 
-    template <typename T>
-    struct is_fraction {
-        static constexpr bool value = false;
-    };
+    template <typename>
+    struct is_fraction : std::false_type {};
 
     template <typename Tnum, typename Tden>
-    struct is_fraction<Fraction<Tnum, Tden>> {
-        static constexpr bool value = true;
-    };
+    struct is_fraction<Fraction<Tnum, Tden>> : std::true_type {};
 }
 
 namespace std {
