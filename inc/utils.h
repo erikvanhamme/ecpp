@@ -68,6 +68,9 @@ constexpr inline int bitPosition(std::uint32_t v) {
 }
 } // end of ecpp::utils
 
+/**
+ * @brief Type trait for checking if a typename is a bitmask.
+ */
 template<typename>
 struct is_bitmask : std::false_type {};
 } // end of ecpp
