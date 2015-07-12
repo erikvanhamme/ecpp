@@ -22,60 +22,76 @@
 #include <type_traits>
 
 namespace ecpp {
-    namespace utils {
+namespace utils {
 
-        template<typename T>
-        static void byteSwap(T &subject) {
-            constexpr std::size_t subjectSize = sizeof(T);
-            std::uint8_t *data = reinterpret_cast<std::uint8_t *>(&subject);
-            for (std::uint8_t *p = data, *end = (data + subjectSize - 1); p < end; ++p, --end) {
-                std::uint8_t swap = *p;
-                *p = *end;
-                *end = swap;
-            }
-        }
-
-        template<>
-        void byteSwap<std::uint8_t>(std::uint8_t &subject);
-
-        template<>
-        void byteSwap<std::int8_t>(std::int8_t &subject);
-
-        template<>
-        void byteSwap<std::uint16_t>(std::uint16_t &subject);
-
-        template<>
-        void byteSwap<std::int16_t>(std::int16_t &subject);
-
-        template<>
-        void byteSwap<std::uint32_t>(std::uint32_t &subject);
-
-        template<>
-        void byteSwap<std::int32_t>(std::int32_t &subject);
-
-        template <>
-        void byteSwap<std::uint64_t>(std::uint64_t &subject);
-
-        template <>
-        void byteSwap<std::int64_t>(std::int64_t &subject);
-
-        // Using de Bruijn Sequences to Index a 1 in a Computer Word:
-        // http://supertech.csail.mit.edu/papers/debruijn.pdf
-        static constexpr unsigned int deBruijn[] = {0u, 1u, 28u, 2u, 29u, 14u, 24u, 3u, 30u, 22u, 20u, 15u, 25u, 17u, 4u, 8u,
-                                                    31u, 27u, 13u, 23u, 21u, 19u, 16u, 7u, 26u, 12u, 18u, 6u, 11u, 5u, 10u, 9u};
-        constexpr inline int bitPosition(std::uint32_t v) {
-            return deBruijn[(static_cast<std::uint32_t>((v & -v) * 0x077CB531u)) >> 27];
-        }
+template<typename T>
+static void byteSwap(T &subject) {
+    constexpr std::size_t subjectSize = sizeof(T);
+    std::uint8_t *data = reinterpret_cast<std::uint8_t *>(&subject);
+    for (std::uint8_t *p = data, *end = (data + subjectSize - 1); p < end; ++p, --end) {
+        std::uint8_t swap = *p;
+        *p = *end;
+        *end = swap;
     }
-
-    template<typename>
-    struct is_bitmask : std::false_type {};
 }
+
+template<>
+void byteSwap<std::uint8_t>(std::uint8_t &subject);
+
+template<>
+void byteSwap<std::int8_t>(std::int8_t &subject);
+
+template<>
+void byteSwap<std::uint16_t>(std::uint16_t &subject);
+
+template<>
+void byteSwap<std::int16_t>(std::int16_t &subject);
+
+template<>
+void byteSwap<std::uint32_t>(std::uint32_t &subject);
+
+template<>
+void byteSwap<std::int32_t>(std::int32_t &subject);
+
+template <>
+void byteSwap<std::uint64_t>(std::uint64_t &subject);
+
+template <>
+void byteSwap<std::int64_t>(std::int64_t &subject);
+
+// Using de Bruijn Sequences to Index a 1 in a Computer Word:
+// http://supertech.csail.mit.edu/papers/debruijn.pdf
+static constexpr unsigned int deBruijn[] = {0u, 1u, 28u, 2u, 29u, 14u, 24u, 3u, 30u, 22u, 20u, 15u, 25u, 17u, 4u, 8u,
+                                            31u, 27u, 13u, 23u, 21u, 19u, 16u, 7u, 26u, 12u, 18u, 6u, 11u, 5u, 10u, 9u};
+constexpr inline int bitPosition(std::uint32_t v) {
+    return deBruijn[(static_cast<std::uint32_t>((v & -v) * 0x077CB531u)) >> 27];
+}
+} // end of ecpp::utils
+
+template<typename>
+struct is_bitmask : std::false_type {};
+} // end of ecpp
 
 template<typename T>
 constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, T>::type operator | (const T left, const T right) {
     return T(typename std::underlying_type<T>::type(left) | typename std::underlying_type<T>::type(right));
 }
 
+template<typename T>
+constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, T>::type operator & (const T left, const T right) {
+    return T(typename std::underlying_type<T>::type(left) & typename std::underlying_type<T>::type(right));
+}
+
+template<typename T>
+constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, T>::type operator ~ (const T input) {
+    return T(~typename std::underlying_type<T>::type(input));
+}
+
+template<typename T>
+constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, bool>::type operator == (const T mask, const int i) {
+    return typename std::underlying_type<T>::type(mask) == i;
+}
+
+// TODO: Add missing operators for bitmask handling
 
 #endif // UTILS_H
