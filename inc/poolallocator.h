@@ -14,20 +14,35 @@
  * limitations under the License.
  */
 
+#ifndef POOLALLOCATOR_H
+#define POOLALLOCATOR_H
+
 #include "allocator.h"
 
 #include <cstddef>
+#include <cstdint>
 
-ecpp::Allocator::Allocator() {
+namespace ecpp {
+
+class PoolAllocator : public Allocator {
+public:
+    PoolAllocator(std::size_t poolSize, std::size_t blockSize, void *poolMem);
+    virtual ~PoolAllocator();
+
+    virtual void *allocate(std::size_t size) override;
+    virtual void deallocate(void *address) override;
+
+private:
+    int findFreeBlocks(std::size_t blocksNeeded) const;
+
+    std::uint8_t *_dataMem;
+    std::uint8_t *_metaMem;
+    std::size_t _blockCount;
+    std::size_t _blockSize;
+    std::size_t _dataMemSize;
+    std::size_t _metaMemSize;
+};
+
 }
 
-ecpp::Allocator::~Allocator() {
-}
-
-void *ecpp::Allocator::allocate(std::size_t size) {
-    return ::operator new(size);
-}
-
-void ecpp::Allocator::deallocate(void *address) {
-    ::operator delete(address);
-}
+#endif // POOLALLOCATOR_H
