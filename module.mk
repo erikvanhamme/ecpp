@@ -22,6 +22,7 @@ headers += \
 	ecpp/inc/control/pid.h \
 	ecpp/inc/mem/allocator.h \
 	ecpp/inc/mem/factory.h \
+        ecpp/inc/mem/linkedlist.h \
 	ecpp/inc/util/fraction.h \
 	ecpp/inc/util/range.h \
 
