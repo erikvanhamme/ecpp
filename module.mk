@@ -19,11 +19,11 @@ sources += \
 	ecpp/src/utils.cpp \
 
 headers += \
-	ecpp/inc/mem/linkedlist.h \
 	ecpp/inc/allocator.h \
 	ecpp/inc/endianness.h \
 	ecpp/inc/factory.h \
 	ecpp/inc/fraction.h \
+	ecpp/inc/linkedlist.h \
 	ecpp/inc/pid.h \
 	ecpp/inc/range.h \
 	ecpp/inc/utils.h \
