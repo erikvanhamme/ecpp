@@ -15,6 +15,7 @@
 sources += \
 	ecpp/src/allocator.cpp \
 	ecpp/src/assertsafe.cpp \
+	ecpp/src/poolallocator.cpp \
 	ecpp/src/throwsafe.cpp \
 	ecpp/src/utils.cpp \
 
@@ -25,6 +26,7 @@ headers += \
 	ecpp/inc/fraction.h \
 	ecpp/inc/linkedlist.h \
 	ecpp/inc/pid.h \
+	ecpp/inc/poolallocator.h \
 	ecpp/inc/range.h \
 	ecpp/inc/utils.h \
 
