@@ -22,7 +22,6 @@
 #include <cstddef>
 
 namespace ecpp {
-namespace mem {
 
 // This prototype is required to make sure LinkedList can be used in the definition of LinkedListIterator.
 template <typename T>
@@ -357,7 +356,6 @@ private:
     friend class LinkedListIterator<T>;
 };
 
-}
 }
 
 #endif // LINKEDLIST_H
