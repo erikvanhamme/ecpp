@@ -13,16 +13,18 @@
 # limitations under the License.
 
 sources += \
-	ecpp/src/mem/allocator.cpp \
-	ecpp/src/misc/assertsafe.cpp \
-        ecpp/src/misc/throwsafe.cpp \
-	ecpp/src/util/byteutils.cpp \
+	ecpp/src/allocator.cpp \
+	ecpp/src/assertsafe.cpp \
+	ecpp/src/throwsafe.cpp \
+	ecpp/src/utils.cpp \
 
 headers += \
-	ecpp/inc/control/pid.h \
-	ecpp/inc/mem/allocator.h \
-	ecpp/inc/mem/factory.h \
-        ecpp/inc/mem/linkedlist.h \
-	ecpp/inc/util/fraction.h \
-	ecpp/inc/util/range.h \
+	ecpp/inc/mem/linkedlist.h \
+	ecpp/inc/allocator.h \
+	ecpp/inc/endianness.h \
+	ecpp/inc/factory.h \
+	ecpp/inc/fraction.h \
+	ecpp/inc/pid.h \
+	ecpp/inc/range.h \
+	ecpp/inc/utils.h \
 

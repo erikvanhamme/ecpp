@@ -14,36 +14,36 @@
  * limitations under the License.
  */
 
-#include "byteutils.h"
+#include "utils.h"
 
 #include <cstdint>
 
 template<>
-void ecpp::util::byteSwap<std::uint8_t>(std::uint8_t &subject) {
+void ecpp::utils::byteSwap<std::uint8_t>(std::uint8_t &subject) {
     (void) subject;
 }
 
 template<>
-void ecpp::util::byteSwap<std::int8_t>(std::int8_t &subject) {
+void ecpp::utils::byteSwap<std::int8_t>(std::int8_t &subject) {
     (void) subject;
 }
 
 template<>
-void ecpp::util::byteSwap<std::uint16_t>(std::uint16_t &subject) {
+void ecpp::utils::byteSwap<std::uint16_t>(std::uint16_t &subject) {
     std::uint8_t a = subject >> 8;
     std::uint8_t b = subject;
     subject = (static_cast<std::uint16_t>(b) << 8) | a;
 }
 
 template<>
-void ecpp::util::byteSwap<std::int16_t>(std::int16_t &subject) {
+void ecpp::utils::byteSwap<std::int16_t>(std::int16_t &subject) {
     std::uint8_t a = subject >> 8;
     std::uint8_t b = subject;
     subject = (static_cast<std::int16_t>(b) << 8) | a;
 }
 
 template<>
-void ecpp::util::byteSwap<std::uint32_t>(std::uint32_t &subject) {
+void ecpp::utils::byteSwap<std::uint32_t>(std::uint32_t &subject) {
     std::uint8_t a = subject >> 24;
     std::uint8_t b = subject >> 16;
     std::uint8_t c = subject >> 8;
@@ -53,7 +53,7 @@ void ecpp::util::byteSwap<std::uint32_t>(std::uint32_t &subject) {
 }
 
 template<>
-void ecpp::util::byteSwap<std::int32_t>(std::int32_t &subject) {
+void ecpp::utils::byteSwap<std::int32_t>(std::int32_t &subject) {
     std::uint8_t a = subject >> 24;
     std::uint8_t b = subject >> 16;
     std::uint8_t c = subject >> 8;
@@ -63,7 +63,7 @@ void ecpp::util::byteSwap<std::int32_t>(std::int32_t &subject) {
 }
 
 template <>
-void ecpp::util::byteSwap<std::uint64_t>(std::uint64_t &subject) {
+void ecpp::utils::byteSwap<std::uint64_t>(std::uint64_t &subject) {
     std::uint8_t a = subject >> 56;
     std::uint8_t b = subject >> 48;
     std::uint8_t c = subject >> 40;
@@ -79,7 +79,7 @@ void ecpp::util::byteSwap<std::uint64_t>(std::uint64_t &subject) {
 }
 
 template <>
-void ecpp::util::byteSwap<std::int64_t>(std::int64_t &subject) {
+void ecpp::utils::byteSwap<std::int64_t>(std::int64_t &subject) {
     std::uint8_t a = subject >> 56;
     std::uint8_t b = subject >> 48;
     std::uint8_t c = subject >> 40;

@@ -20,17 +20,15 @@
 #include <cstddef>
 
 namespace ecpp {
-    namespace mem {
 
-        class Allocator {
-        public:
-            Allocator();
-            virtual ~Allocator();
+    class Allocator {
+    public:
+        Allocator();
+        virtual ~Allocator();
 
-            virtual void *allocate(std::size_t size);
-            virtual void deallocate(void *address);
-        };
-    }
+        virtual void *allocate(std::size_t size);
+        virtual void deallocate(void *address);
+    };
 }
 
 #endif // ALLOCATOR_H

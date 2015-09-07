@@ -16,16 +16,16 @@
 
 #include "allocator.h"
 
-ecpp::mem::Allocator::Allocator() {
+ecpp::Allocator::Allocator() {
 }
 
-ecpp::mem::Allocator::~Allocator() {
+ecpp::Allocator::~Allocator() {
 }
 
-void *ecpp::mem::Allocator::allocate(std::size_t size) {
+void *ecpp::Allocator::allocate(std::size_t size) {
     return ::operator new(size);
 }
 
-void ecpp::mem::Allocator::deallocate(void *address) {
+void ecpp::Allocator::deallocate(void *address) {
     ::operator delete(address);
 }
