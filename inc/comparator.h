@@ -64,11 +64,11 @@ private:
     }
 };
 
-template <typename Ta, typename Tb>
-class GreaterThenComparator : public Comparator<Ta, Tb> {
+template <typename Ta, typename Tb = Ta>
+class GreaterThanComparator : public Comparator<Ta, Tb> {
 public:
-    static GreaterThenComparator<Ta, Tb> &getInstance() {
-        static GreaterThenComparator<Ta, Tb> instance;
+    static GreaterThanComparator<Ta, Tb> &getInstance() {
+        static GreaterThanComparator<Ta, Tb> instance;
         return instance;
     }
 
