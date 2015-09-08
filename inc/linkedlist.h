@@ -18,12 +18,15 @@
 #define LINKEDLIST_H
 
 #include "allocator.h"
+#include "comparator.h"
 
 #include <cstddef>
 
+// TODO: Check if the iterators and entry class can be nested into the LinkedList class.
+
 namespace ecpp {
 
-// This prototype is required to make sure LinkedList can be used in the definition of LinkedListIterator.
+// This prototype is required to make sure LinkedList can be used in the definition of LinkedListIterator and LinkedListEntry.
 template <typename T>
 class LinkedList;
 
@@ -48,6 +51,7 @@ private:
     LinkedListEntry *_next;
     LinkedListEntry *_previous;
 
+    friend class LinkedList<T>;
     friend class LinkedListIterator<T>;
     friend class ConstLinkedListIterator<T>;
 };
@@ -304,14 +308,11 @@ public:
     }
 
     const T at(const std::size_t pos) const {
-        if (pos >= size()) {
+        LinkedListEntry<T> *entry = findEntry(pos);
+        if (entry == nullptr) {
             return T();
         } else {
-            auto it = begin();
-            for (std::size_t i = 0; i < pos; ++i) {
-                ++it;
-            }
-            return *it;
+            return entry->_item;
         }
     }
 
@@ -322,13 +323,69 @@ public:
     }
 
     bool swap(const std::size_t fromPos, const std::size_t toPos) {
-        (void) fromPos;
-        (void) toPos;
-        // TODO: Implement me.
-        return false;
+
+        LinkedListEntry<T> *from = findEntry(fromPos);
+        LinkedListEntry<T> *to = findEntry(toPos);
+
+        if ((from == nullptr) || (to == nullptr)) {
+            return false;
+        }
+
+        bool fromWasHead = (from == _head);
+        bool fromWasTail = (from == _tail);
+        bool toWasHead = (to == _head);
+        bool toWasTail = (to == _tail);
+
+        LinkedListEntry<T> *fromNext = from->_next;
+        LinkedListEntry<T> *fromPrevious = from->_previous;
+        LinkedListEntry<T> *toNext = to->_next;
+        LinkedListEntry<T> *toPrevious = to->_previous;
+
+        // Update next and previous of 'from' to point to 'to'.
+        if (fromPrevious != nullptr) {
+            fromPrevious->_next = to;
+        }
+        if (fromNext != nullptr) {
+            fromNext->_previous = to;
+        }
+
+        // Update 'to' 's next and previous to point to what 'from' was pointing to.
+        to->_next = fromNext;
+        to->_previous = fromPrevious;
+
+        // Update next and previous of 'to' to point to 'from'.
+        if (toPrevious != nullptr) {
+            toPrevious->_next = from;
+        }
+        if (toNext != nullptr) {
+            toNext->_previous = from;
+        }
+
+        // Update 'from' 's next and previous to point to what 'to' was pointing to.
+        from->_next = toNext;
+        from->_previous = toPrevious;
+
+        // Update _head and _tail if needed.
+        if (fromWasHead == true) {
+            _head = to;
+        }
+        if (toWasHead == true) {
+            _head = from;
+        }
+        if (fromWasTail == true) {
+            _tail = to;
+        }
+        if (toWasTail == true) {
+            _tail = from;
+        }
+
+        return true;
     }
 
-    // TODO: Add sort function that takes a lambda function as argument to sort the list.
+    void sort(const Comparator<T> &comp) {
+        (void) comp;
+        // TODO: implement me.
+    }
 
     LinkedListIterator<T> begin() {
         return LinkedListIterator<T>(*this, _head);
@@ -347,12 +404,24 @@ public:
     }
 
 private:
+
+    LinkedListEntry<T> *findEntry(const std::size_t pos) const {
+        LinkedListEntry<T> *entry = _head;
+        for (std::size_t i = 0; i < pos; ++i) {
+            entry = entry->_next;
+            if (entry == nullptr) {
+                break;
+            }
+        }
+        return entry;
+    }
+
     Allocator &_allocator;
     LinkedListEntry<T> *_head;
     LinkedListEntry<T> *_tail;
     std::size_t _size;
 
-    // LinkedListIterator<T> needs access to _size, _head, _tail and _allocator
+    // LinkedListIterator<T> needs access to _size, _head, _tail and _allocator.
     friend class LinkedListIterator<T>;
 };
 

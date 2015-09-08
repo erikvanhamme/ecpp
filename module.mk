@@ -21,6 +21,7 @@ sources += \
 
 headers += \
 	ecpp/inc/allocator.h \
+	ecpp/inc/comparator.h \
 	ecpp/inc/endianness.h \
 	ecpp/inc/factory.h \
 	ecpp/inc/fraction.h \
