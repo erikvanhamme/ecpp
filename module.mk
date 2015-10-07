@@ -19,15 +19,5 @@ sources += \
 	ecpp/src/throwsafe.cpp \
 	ecpp/src/utils.cpp \
 
-headers += \
-	ecpp/inc/allocator.h \
-	ecpp/inc/comparator.h \
-	ecpp/inc/endianness.h \
-	ecpp/inc/factory.h \
-	ecpp/inc/fraction.h \
-	ecpp/inc/linkedlist.h \
-	ecpp/inc/pid.h \
-	ecpp/inc/poolallocator.h \
-	ecpp/inc/range.h \
-	ecpp/inc/utils.h \
+includes += ecpp/inc
 
