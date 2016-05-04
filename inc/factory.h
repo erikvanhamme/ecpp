@@ -25,75 +25,50 @@
 
 namespace ecpp {
 
-    class Factory {
-    public:
+class Factory {
+public:
 
-        template <typename T>
-        class Deleter {
-        public:
-            Deleter() {
+    Factory(Allocator &allocator) : _allocator(allocator) {
+    }
+
+    template <typename T, typename... X>
+    std::unique_ptr<T, std::function<void(T *)>> create(X... x) {
+
+        auto mem = _allocator.allocate(sizeof(T));
+
+        auto deleter = [this] (T *t) {
+            if (t != nullptr) {
+                t->T::~T();
             }
-
-            void operator()(T *t) const {
-                _lambda(t);
-            }
-
-            void setLambda(std::function<void(T *)> lambda) {
-                _lambda = lambda;
-            }
-
-        private:
-            std::function<void(T *)> _lambda;
+            _allocator.deallocate(t);
         };
 
-        Factory(Allocator &allocator) : _allocator(allocator) {
-        }
+        return std::unique_ptr<T, std::function<void(T *)>> (new (mem) T(std::forward<X> (x)...), deleter);
+    }
 
-        template <typename T, typename... X>
-        std::unique_ptr<T, Deleter<T>> create(X... x) {
+    template <typename T>
+    std::unique_ptr<T[], std::function<void(T *)>> createArray(std::size_t n) {
 
-            // Allocate the memory.
-            void *mem = _allocator.allocate(sizeof(T));
+        auto mem = _allocator.allocate(sizeof(T) * n);
 
-            // Create the deleter and set its lambda function.
-            Deleter<T> deleter;
-            deleter.setLambda([this] (T *t) {
-                if (t != nullptr) {
-                    t->T::~T();
+        auto deleter = [this, n] (T *t) {
+            T *tI = t;
+            for (std::size_t i = 0; i < n; ++i, ++tI) {
+                if (tI != nullptr) {
+                    tI->T::~T();
                 }
-                _allocator.deallocate(t);
-            });
+            }
+            _allocator.deallocate(t);
+        };
 
-            // Create smart pointer and return it.
-            return std::unique_ptr<T, Deleter<T>>(new (mem) T(std::forward<X>(x)...), deleter);
-        }
+        return std::unique_ptr<T[], std::function<void(T *)>> (new (mem) T[n], deleter);
+    }
 
-        template <typename T>
-        std::unique_ptr<T[], Deleter<T>> createArray(std::size_t n) {
+private:
+    Allocator &_allocator;
 
-            // Allocate the memory.
-            void *mem = _allocator.allocate(sizeof(T) * n);
+};
 
-            // Create deleter and set its lambda function.
-            Deleter<T> deleter;
-            deleter.setLambda([this, n] (T *t) {
-                T *tI = t;
-                for (std::size_t i = 0; i < n; ++i, ++tI) {
-                    if (tI != nullptr) {
-                        tI->T::~T();
-                    }
-                }
-                _allocator.deallocate(t);
-            });
-
-            // Create smart pointer and return it.
-            return std::unique_ptr<T[], Deleter<T>>(new (mem) T[n], deleter);
-        }
-
-    private:
-
-        Allocator &_allocator;
-    };
-}
+} // ecpp
 
 #endif // FACTORY_H
