@@ -91,7 +91,7 @@ constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, T>::type operator 
 }
 
 template<typename T>
-constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, bool>::type operator == (const T mask, const int i) {
+constexpr typename std::enable_if<ecpp::is_bitmask<T>::value, bool>::type operator == (const T mask, const unsigned int i) {
     return typename std::underlying_type<T>::type(mask) == i;
 }
 
